@@ -11,6 +11,9 @@ use ratatui::{
 pub struct App {
     /// Is the application running?
     running: bool,
+
+    /// Current count
+    count: u32,
 }
 
 impl App {
@@ -35,13 +38,8 @@ impl App {
     /// - <https://docs.rs/ratatui/latest/ratatui/widgets/index.html>
     /// - <https://github.com/ratatui/ratatui/tree/master/examples>
     fn draw(&mut self, frame: &mut Frame) {
-        let title = Line::from("Ratatui Simple Template")
-            .bold()
-            .blue()
-            .centered();
-        let text = "Hello, Ratatui!\n\n\
-            Created using https://github.com/ratatui/templates\n\
-            Press `Esc`, `Ctrl-C` or `q` to stop running.";
+        let title = Line::from("Counter").bold().blue().centered();
+        let text = format!("{}", self.count);
         frame.render_widget(
             Paragraph::new(text)
                 .block(Block::bordered().title(title))
@@ -71,7 +69,19 @@ impl App {
             (_, KeyCode::Esc | KeyCode::Char('q'))
             | (KeyModifiers::CONTROL, KeyCode::Char('c') | KeyCode::Char('C')) => self.quit(),
             // Add other key handlers here.
+            (_, KeyCode::Char('k')) => self.increment(),
+            (_, KeyCode::Char('j')) => self.decrement(),
             _ => {}
+        }
+    }
+
+    fn increment(&mut self) {
+        self.count += 1;
+    }
+
+    fn decrement(&mut self) {
+        if self.count > 0 {
+            self.count -= 1;
         }
     }
 
