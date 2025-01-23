@@ -71,8 +71,13 @@ impl App {
             // Add other key handlers here.
             (_, KeyCode::Char('k')) => self.increment(),
             (_, KeyCode::Char('j')) => self.decrement(),
+            (_, KeyCode::Char('r')) => self.reset(),
             _ => {}
         }
+    }
+
+    fn reset(&mut self) {
+        self.count = 0;
     }
 
     fn increment(&mut self) {
